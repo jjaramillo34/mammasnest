@@ -2,16 +2,10 @@
 
 import { motion } from 'motion/react'
 import { ArrowRight, Star, Leaf, Heart, Sparkles, Coffee, Zap, Shield } from 'lucide-react'
-import { useInView } from 'react-intersection-observer'
-import { useSpring, animated, config } from '@react-spring/web'
 import { useState, useEffect } from 'react'
 
 const Hero = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
-  const [heroRef, heroInView] = useInView({
-    threshold: 0.1,
-    triggerOnce: false
-  })
 
   // Mouse tracking for parallax effect
   useEffect(() => {
@@ -26,28 +20,6 @@ const Hero = () => {
     return () => window.removeEventListener('mousemove', handleMouseMove)
   }, [])
 
-  // Spring animations
-  const titleSpring = useSpring({
-    from: { opacity: 0, transform: 'translateY(50px)' },
-    to: { opacity: heroInView ? 1 : 0, transform: heroInView ? 'translateY(0px)' : 'translateY(50px)' },
-    config: config.wobbly,
-    delay: 200
-  })
-
-  const buttonSpring = useSpring({
-    from: { opacity: 0, transform: 'scale(0.8)' },
-    to: { opacity: heroInView ? 1 : 0, transform: heroInView ? 'scale(1)' : 'scale(0.8)' },
-    config: config.gentle,
-    delay: 600
-  })
-
-  const cardSpring = useSpring({
-    from: { opacity: 0, transform: 'rotateY(90deg)' },
-    to: { opacity: heroInView ? 1 : 0, transform: heroInView ? 'rotateY(0deg)' : 'rotateY(90deg)' },
-    config: config.slow,
-    delay: 800
-  })
-
   // Floating particles animation
   const particles = Array.from({ length: 20 }, (_, i) => ({
     id: i,
@@ -60,7 +32,6 @@ const Hero = () => {
 
   return (
     <section 
-      ref={heroRef}
       id="home" 
       className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-jamaican-green-50 to-jamaican-yellow-50 overflow-hidden"
     >
@@ -151,7 +122,7 @@ const Hero = () => {
 
       <div className="container-custom section-padding relative z-10">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
-          {/* Left Content with Spring Animations */}
+          {/* Left Content with Enhanced Framer Motion Animations */}
           <div className="text-center lg:text-left">
             {/* Premium Badge with Enhanced Animation */}
             <motion.div
@@ -183,9 +154,11 @@ const Hero = () => {
               </motion.span>
             </motion.div>
 
-            {/* Main Heading with Spring Animation */}
-            <animated.h1
-              style={titleSpring}
+            {/* Main Heading with Enhanced Framer Motion */}
+            <motion.h1
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.8, type: "spring", stiffness: 100 }}
               className="text-5xl md:text-6xl lg:text-7xl font-serif font-bold mb-8 leading-tight"
             >
               <motion.span 
@@ -208,7 +181,7 @@ const Hero = () => {
               >
                 Organic Tea & Honey
               </motion.span>
-            </animated.h1>
+            </motion.h1>
 
             {/* Enhanced Description with Typewriter Effect */}
             <motion.p
@@ -227,9 +200,11 @@ const Hero = () => {
               </motion.span>
             </motion.p>
 
-            {/* Enhanced CTA Buttons with Spring Animation */}
-            <animated.div
-              style={buttonSpring}
+            {/* Enhanced CTA Buttons with Framer Motion */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.8, duration: 0.6, type: "spring", stiffness: 100 }}
               className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-12"
             >
               <motion.button
@@ -288,7 +263,7 @@ const Hero = () => {
                   Learn Our Story
                 </motion.span>
               </motion.button>
-            </animated.div>
+            </motion.div>
 
             {/* Enhanced Trust Indicators with Hover Effects */}
             <motion.div
@@ -326,8 +301,10 @@ const Hero = () => {
           </div>
 
           {/* Enhanced Right Content - Product Showcase with 3D Effects */}
-          <animated.div
-            style={cardSpring}
+          <motion.div
+            initial={{ opacity: 0, rotateY: 90 }}
+            animate={{ opacity: 1, rotateY: 0 }}
+            transition={{ delay: 0.4, duration: 0.8, type: "spring", stiffness: 50 }}
             className="relative"
           >
             {/* Background Glow with Parallax */}
@@ -505,7 +482,7 @@ const Hero = () => {
             >
               <Heart size={24} />
             </motion.div>
-          </animated.div>
+          </motion.div>
         </div>
       </div>
     </section>
